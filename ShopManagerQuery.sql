@@ -1,7 +1,6 @@
-CREATE DATABASE ShopManagerDB
+DROP DATABASE ShopManagerDB	
 GO
-
-DROP DATABASE ShopManagerDB
+CREATE DATABASE ShopManagerDB
 GO
 
 USE ShopManagerDB
@@ -14,9 +13,9 @@ GO
 CREATE TABLE Product
 (
 	ProductID INT IDENTITY(1, 1) PRIMARY KEY,
-	ProductCategoryID INT NOT NULL,
+	CategoryID INT NOT NULL,
 	ProductName NVARCHAR(100) NOT NULL DEFAULT N'Unknown',
-	ProductPrice FLOAT NOT NULL DEFAULT 0
+	Price FLOAT NOT NULL DEFAULT 0
 )
 GO
 
@@ -32,6 +31,9 @@ CREATE TABLE Category
 GO
 
 -- Table
+IF OBJECT_ID('Table') IS NOT NULL
+	DROP TABLE dbo.[Table];
+GO
 CREATE TABLE [Table]
 (
 	TableID INT IDENTITY(1, 1) PRIMARY KEY,
@@ -41,16 +43,42 @@ CREATE TABLE [Table]
 GO
 
 -- Account
+IF OBJECT_ID('Account') IS NOT NULL
+	DROP TABLE dbo.Account;
+GO
 CREATE TABLE Account
-()
+(
+	AccountID INT IDENTITY PRIMARY KEY,
+	DisplayName NVARCHAR(50) NOT NULL,
+	Username NVARCHAR(50) NOT NULL,
+	[Password] NVARCHAR(50) NOT NULL,
+	AccountType INT NOT NULL 
+)
 GO
 
 -- Bill
+IF OBJECT_ID('Bill') IS NOT NULL
+	DROP TABLE dbo.Bill;
+GO
 CREATE TABLE Bill
-()
+(
+	BillID INT IDENTITY(1, 1) PRIMARY KEY,
+	TableID INT NOT NULL,
+	DateCheckIn DATE NOT NULL DEFAULT GETDATE(),
+	DateCheckOut DATE,
+	BillStatus INT NOT NULL DEFAULT 0	-- 1: paid, 0: pending
+)
 GO
 
 -- BillInfo
+IF OBJECT_ID('BillInfo') IS NOT NULL
+	DROP TABLE dbo.BillInfo;
+GO
 CREATE TABLE BillInfo
-()
+(
+	ID INT IDENTITY(1, 1) PRIMARY KEY,
+	BillID INT NOT NULL,
+	ProductID INT NOT NULL,
+	Total INT NOT NULL DEFAULT 0
+)
 GO
